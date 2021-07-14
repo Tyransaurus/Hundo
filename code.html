@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>JavaScript Base Template</title>
+    <title>Hundo | Code Page</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,6 +18,9 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/all.min.css">
 
+    <link href="/img/favicon.png" rel="icon">
+    <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -25,7 +28,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <img src="/img/favicontextmuted.png" alt="" width="30" class="favicontopleft">
-            <a class="navbar-brand" href="/index.html"> JS Template</a>
+            <a class="navbar-brand" href="/index.html">Hundo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -42,18 +45,129 @@
                         <a class="nav-link active" href="/code.html">The Code</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about.html">About Me</a>
+                        <a class="nav-link" href="https://dickjiang.netlify.app/" target="_blank">About Me</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <main class="flex-shrink-0">
-        <div class="container">
-            <h1 class="mt-5">Template with dark fixed navbar and sticky footer</h1>
-            <p class="lead">Pin a footer to the bottom of the viewport in desktop browsers with this custom HTML and
-                CSS. A fixed navbar has been added with padding-top: 60px; on the main > .container.</p>
+    <main class="flex-shrink-0" id="content">
+        <div class="container col-xxl-8 px-4 py-5 mt-5">
+            <h2 class="border-1 border-bottom border-dark">The Code</h2>
+            <div class="row">
+                <div class="col" id="codeCol" >
+                    <pre>
+                        <code class="language-javascript line-numbers">
+                            function getNumbers() {
+                                //access the webpage and get the values from the inputs
+                                let startNumber = document.getElementById("startValue").value;
+                                let endNumber = document.getElementById("endValue").value;
+
+                                //checks to make sure both values are integers
+                                let newStart = parseInt(startNumber);
+                                let newEnd = parseInt(endNumber);
+
+                                //setting up boolean and an empty string for error codes
+                                let errorState = false;
+                                let errorMsg = "";
+
+                                //this becomes true if the two values are not numbers
+                                if (isNaN(newStart) || isNaN(newEnd)) {
+                                    errorState = true;
+                                    errorMsg += "Please use numbers&lt;hr/>"
+                                }
+
+                                //this becomes true if the end value is less than the sart value
+                                if (newStart > newEnd) {
+                                    errorState = true;
+                                    errorMsg += "Start value must be less than end value&lt;hr/>"
+                                }
+
+                                //this becomes true if any value is higher than 10,000 or less than -10000
+                                //this sets an upper and lower bound for the loops
+                                if (newStart > 10000 || newStart &lt; -10000 || newEnd > 10000 || newEnd &lt; -10000) {
+                                    errorState = true;
+                                    errorMsg += "-10,000 and 10,000 are the limits&lt;hr/>"
+                                }
+
+                                //if any of the previous becomes true, a SweetAlert will fire and exit the function
+                                if (errorState) {
+                                    Swal.fire(
+                                        'Something went wrong',
+                                        `${errorMsg}`,
+                                        'error'
+                                    )
+                                    return;
+                                }
+
+                                //take the start and end values as the bounds for a "for" loop
+                                //that will create an array and return it
+                                let numbers = generateNumbers(newStart, newEnd)
+
+                                //take the array that was returned and pass it to a function that will display it
+                                displayNumbers(numbers);
+                            }
+
+                            //Wrapper function/method - a function that calls other functions
+
+                            function generateNumbers(startValue, endValue) {
+                                let numbers = [];
+
+                                //loop over every number from startValue to endValue
+                                for (let index = startValue; index &lt;= endValue; index++) {
+                                    numbers.push(index);
+                                }
+                                return numbers;
+                            }
+
+                            // this function exists to display the results to the user
+                            function displayNumbers(numbers) {
+
+                                //this is create a class to be able to use css if it's even and an empty string
+                                // so we can send it out to the site
+                                let className = "even";
+                                let templateRows = "";
+
+                                //this goes through all the numbers in the array
+                                for (let index = 0; index &lt; numbers.length; index++) {
+                                    let number = numbers[index];
+
+                                    //this assigns the even class to any numbers that is divisible
+                                    // by 2 with no remainder
+                                    if (number % 2 == 0) {
+                                        className = "even";
+                                    } 
+                                    // otherwise it will assign an odd class to the number instead
+                                    else {
+                                        className = "odd";
+                                    }
+                                    //this is to send out the number and class as values of templateRows
+                                    templateRows = templateRows + `&lt;tr>&lt;td
+                                    class="${className}">${number}&lt;/td>&lt;/tr>`;
+                                }
+                                //this is to send the values to the webpage
+                                document.getElementById("output").innerHTML = templateRows;
+                            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-lg-4 col-sm-12" id="explainCol">
+                    <p>The code is seperated into 3 functions.</p>
+                    <h5>getNumbers()</h5>
+                    <p>This uses the <strong>getElementById</strong> function to grab values that are inputed on the webpage
+                    to change them into javascript values that can be used. These values are then checked to make sure they 
+                    are integers and in a proper format. They are then used in the <strong>generateNumbers</strong> function to create an array.<strong>
+                    displayNumbers</strong> then takes the array and displays them on the website.</p>
+                    <h5>generateNumbers()</h5>
+                    <p><strong>generateNumbers</strong> takes two numbers which are <strong>newStart</strong> and <strong>newEnd</strong> and goes through them and 
+                    puts them into an array list. This is then returned as the <strong>numbers</strong> array to be used by <strong>displayNumbers</strong>.</p>
+                    <h5>displayNumbers()</h5>
+                    <p>This takes the <strong>numbers</strong> array and goes through it with a for loop and assigns a class to every number in it based on 
+                        whether or not it's even or odd. This is then sent out to the webpage as <strong>templateRows</strong>.
+                    </p>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -61,7 +175,7 @@
         <div class="container-fluid text-center text-muted">
             <div class="row">
                 <div class="col">
-                    &copy2021 <span class="text-muted">Dick Jiang | Demo Format</span>
+                    &copy2021 <span class="text-muted">Dick Jiang | djjiang708405@gmail.com</span>
                 </div>
                 <div class="col">
                     <img src="/img/favicontextmuted.png" alt="" width="30">
