@@ -101,3 +101,15 @@ pre[class*="language-"] {
 .lead {
     color: #1d5888;
 }
+
+.text-purple {
+    color: #6e5494;
+}
+
+.text-twitter {
+    color: #1DA1F2;
+}
+
+.text-linkedin {
+    color: #0072b1;
+}
